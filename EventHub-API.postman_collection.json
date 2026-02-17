@@ -1,0 +1,627 @@
+{
+  "info": {
+    "name": "EventHub API",
+    "description": "Collection completa para a API EventHub - CRUD Eventos, Participantes, Compra de Ingressos e todas as validacoes",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    }
+  ],
+  "item": [
+    {
+      "name": "Eventos - CRUD",
+      "item": [
+        {
+          "name": "Criar evento (201)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Festival 2026\",\n  \"data\": \"2026-06-15T19:00:00\",\n  \"local\": \"Arena\",\n  \"capacidade\": 2\n}"
+            },
+            "url": "{{baseUrl}}/api/eventos",
+            "description": "Cria evento com dados validos. Esperado: 201 Created"
+          }
+        },
+        {
+          "name": "Listar todos os eventos (200)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/eventos",
+            "description": "Lista todos os eventos. Esperado: 200 OK com array"
+          }
+        },
+        {
+          "name": "Buscar evento por ID (200)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/eventos/1",
+            "description": "Busca evento existente. Esperado: 200 OK"
+          }
+        },
+        {
+          "name": "Atualizar evento (200)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Festival 2026 (atualizado)\",\n  \"data\": \"2026-06-15T20:00:00\",\n  \"local\": \"Arena Principal\",\n  \"capacidade\": 3\n}"
+            },
+            "url": "{{baseUrl}}/api/eventos/1",
+            "description": "Atualiza evento existente. Esperado: 200 OK"
+          }
+        },
+        {
+          "name": "Excluir evento (204)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{baseUrl}}/api/eventos/1",
+            "description": "Exclui evento existente. Esperado: 204 No Content"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Eventos - Validacoes",
+      "item": [
+        {
+          "name": "Criar evento - nome vazio (400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"\",\n  \"data\": \"2026-06-15T19:00:00\",\n  \"local\": \"Arena\",\n  \"capacidade\": 100\n}"
+            },
+            "url": "{{baseUrl}}/api/eventos",
+            "description": "Nome vazio. Esperado: 400 - Nome do evento nao pode ser vazio"
+          }
+        },
+        {
+          "name": "Criar evento - data no passado (400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Evento Passado\",\n  \"data\": \"2020-01-01T10:00:00\",\n  \"local\": \"Local\",\n  \"capacidade\": 50\n}"
+            },
+            "url": "{{baseUrl}}/api/eventos",
+            "description": "Data no passado. Esperado: 400 - Data do evento nao pode ser no passado"
+          }
+        },
+        {
+          "name": "Criar evento - capacidade zero (400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Evento Invalido\",\n  \"data\": \"2026-06-15T19:00:00\",\n  \"local\": \"Arena\",\n  \"capacidade\": 0\n}"
+            },
+            "url": "{{baseUrl}}/api/eventos",
+            "description": "Capacidade zero. Esperado: 400 - Capacidade deve ser maior que zero"
+          }
+        },
+        {
+          "name": "Criar evento - capacidade negativa (400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Evento Invalido\",\n  \"data\": \"2026-06-15T19:00:00\",\n  \"local\": \"Arena\",\n  \"capacidade\": -5\n}"
+            },
+            "url": "{{baseUrl}}/api/eventos",
+            "description": "Capacidade negativa. Esperado: 400 - Capacidade deve ser maior que zero"
+          }
+        },
+        {
+          "name": "Criar evento - local vazio (400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Evento Sem Local\",\n  \"data\": \"2026-06-15T19:00:00\",\n  \"local\": \"\",\n  \"capacidade\": 100\n}"
+            },
+            "url": "{{baseUrl}}/api/eventos",
+            "description": "Local vazio. Esperado: 400 - Local do evento nao pode ser vazio"
+          }
+        },
+        {
+          "name": "Criar evento - campos ausentes (400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            },
+            "url": "{{baseUrl}}/api/eventos",
+            "description": "Corpo vazio. Esperado: 400 com multiplos erros de validacao"
+          }
+        },
+        {
+          "name": "Buscar evento inexistente (404)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/eventos/9999",
+            "description": "Evento com ID 9999 nao existe. Esperado: 404 Not Found"
+          }
+        },
+        {
+          "name": "Atualizar evento inexistente (404)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Evento\",\n  \"data\": \"2026-06-15T19:00:00\",\n  \"local\": \"Arena\",\n  \"capacidade\": 100\n}"
+            },
+            "url": "{{baseUrl}}/api/eventos/9999",
+            "description": "Atualizar evento que nao existe. Esperado: 404 Not Found"
+          }
+        },
+        {
+          "name": "Excluir evento inexistente (404)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{baseUrl}}/api/eventos/9999",
+            "description": "Excluir evento que nao existe. Esperado: 404 com mensagem"
+          }
+        },
+        {
+          "name": "Excluir evento com ingressos (409)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{baseUrl}}/api/eventos/1",
+            "description": "Executar apos ter evento 1 com ingresso vendido. Esperado: 409 - Nao e possivel excluir evento com ingressos vendidos"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Participantes - CRUD",
+      "item": [
+        {
+          "name": "Criar participante (201)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Joao Silva\",\n  \"email\": \"joao@email.com\"\n}"
+            },
+            "url": "{{baseUrl}}/api/participantes",
+            "description": "Cria participante com dados validos. Esperado: 201 Created"
+          }
+        },
+        {
+          "name": "Listar todos os participantes (200)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/participantes",
+            "description": "Lista todos os participantes. Esperado: 200 OK com array"
+          }
+        },
+        {
+          "name": "Buscar participante por ID (200)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/participantes/1",
+            "description": "Busca participante existente. Esperado: 200 OK"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Participantes - Validacoes",
+      "item": [
+        {
+          "name": "Criar participante - nome vazio (400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"\",\n  \"email\": \"teste@email.com\"\n}"
+            },
+            "url": "{{baseUrl}}/api/participantes",
+            "description": "Nome vazio. Esperado: 400 - Nome do participante nao pode ser vazio"
+          }
+        },
+        {
+          "name": "Criar participante - email vazio (400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Maria\",\n  \"email\": \"\"\n}"
+            },
+            "url": "{{baseUrl}}/api/participantes",
+            "description": "Email vazio. Esperado: 400 - E-mail e obrigatorio"
+          }
+        },
+        {
+          "name": "Criar participante - email invalido (400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Maria\",\n  \"email\": \"email-invalido\"\n}"
+            },
+            "url": "{{baseUrl}}/api/participantes",
+            "description": "Email sem formato valido. Esperado: 400 - E-mail invalido"
+          }
+        },
+        {
+          "name": "Criar participante - campos ausentes (400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            },
+            "url": "{{baseUrl}}/api/participantes",
+            "description": "Corpo vazio. Esperado: 400 com multiplos erros"
+          }
+        },
+        {
+          "name": "Buscar participante inexistente (404)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/participantes/9999",
+            "description": "Participante com ID 9999 nao existe. Esperado: 404 com mensagem"
+          }
+        },
+        {
+          "name": "Criar participante - email ja cadastrado (409)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Outro Joao\",\n  \"email\": \"joao@email.com\"\n}"
+            },
+            "url": "{{baseUrl}}/api/participantes",
+            "description": "Executar apos criar participante com joao@email.com. Esperado: 409 - Ja existe participante com o e-mail"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Ingressos - Compra e Historico",
+      "item": [
+        {
+          "name": "Comprar ingresso (201)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"eventoId\": 1,\n  \"participanteId\": 1\n}"
+            },
+            "url": "{{baseUrl}}/api/ingressos/comprar",
+            "description": "Compra ingresso (criar evento e participante antes). Esperado: 201 Created"
+          }
+        },
+        {
+          "name": "Listar ingressos por participante (200)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/ingressos/participante/1",
+            "description": "Historico de ingressos do participante. Esperado: 200 OK com array"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Ingressos - Validacoes",
+      "item": [
+        {
+          "name": "Comprar - evento inexistente (404)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"eventoId\": 9999,\n  \"participanteId\": 1\n}"
+            },
+            "url": "{{baseUrl}}/api/ingressos/comprar",
+            "description": "Evento nao existe. Esperado: 404 - Evento nao encontrado com id: 9999"
+          }
+        },
+        {
+          "name": "Comprar - participante inexistente (404)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"eventoId\": 1,\n  \"participanteId\": 9999\n}"
+            },
+            "url": "{{baseUrl}}/api/ingressos/comprar",
+            "description": "Participante nao existe. Esperado: 404 - Participante nao encontrado com id: 9999"
+          }
+        },
+        {
+          "name": "Comprar - campos nulos (400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            },
+            "url": "{{baseUrl}}/api/ingressos/comprar",
+            "description": "Corpo vazio. Esperado: 400 - eventoId e participanteId obrigatorios"
+          }
+        },
+        {
+          "name": "Listar ingressos - participante inexistente (404)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/ingressos/participante/9999",
+            "description": "Participante nao existe. Esperado: 404 - Participante nao encontrado com id: 9999"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Fluxo Completo - Evento Lotado",
+      "description": "Executar na ordem: cria evento com capacidade 2, cria 2 participantes, compra 2 ingressos, tenta 3a compra (lotado), lista historico",
+      "item": [
+        {
+          "name": "1 - Criar evento (capacidade 2)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Festival 2026\",\n  \"data\": \"2026-06-15T19:00:00\",\n  \"local\": \"Parque\",\n  \"capacidade\": 2\n}"
+            },
+            "url": "{{baseUrl}}/api/eventos",
+            "description": "Cria evento com capacidade 2 para testar lotacao. Esperado: 201"
+          }
+        },
+        {
+          "name": "2 - Criar participante Maria",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Maria\",\n  \"email\": \"maria@email.com\"\n}"
+            },
+            "url": "{{baseUrl}}/api/participantes",
+            "description": "Cria participante 1. Esperado: 201"
+          }
+        },
+        {
+          "name": "3 - Criar participante Pedro",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Pedro\",\n  \"email\": \"pedro@email.com\"\n}"
+            },
+            "url": "{{baseUrl}}/api/participantes",
+            "description": "Cria participante 2. Esperado: 201"
+          }
+        },
+        {
+          "name": "4 - Comprar ingresso Maria (201)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"eventoId\": 1,\n  \"participanteId\": 1\n}"
+            },
+            "url": "{{baseUrl}}/api/ingressos/comprar",
+            "description": "Compra 1 de 2. Esperado: 201 Created"
+          }
+        },
+        {
+          "name": "5 - Comprar ingresso Pedro (201)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"eventoId\": 1,\n  \"participanteId\": 2\n}"
+            },
+            "url": "{{baseUrl}}/api/ingressos/comprar",
+            "description": "Compra 2 de 2. Esperado: 201 Created"
+          }
+        },
+        {
+          "name": "6 - Comprar ingresso - LOTADO (400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"eventoId\": 1,\n  \"participanteId\": 1\n}"
+            },
+            "url": "{{baseUrl}}/api/ingressos/comprar",
+            "description": "Capacidade esgotada. Esperado: 400 - Evento lotado"
+          }
+        },
+        {
+          "name": "7 - Verificar evento (capacidade 0)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/eventos/1",
+            "description": "Verifica que capacidade foi decrementada para 0. Esperado: 200 com capacidade: 0"
+          }
+        },
+        {
+          "name": "8 - Historico Maria",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/ingressos/participante/1",
+            "description": "Lista ingressos da Maria. Esperado: 200 com 1 ingresso"
+          }
+        },
+        {
+          "name": "9 - Historico Pedro",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/ingressos/participante/2",
+            "description": "Lista ingressos do Pedro. Esperado: 200 com 1 ingresso"
+          }
+        }
+      ]
+    }
+  ]
+}
